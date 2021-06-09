@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <b style="color: red">{{ message }}</b>
+  <form name="menu" action="{% url 'nihongo:index' %}" method="post">
+    {% csrf_token %}
+    From: <input type="text" name="begin" value="1">
+    to <input type="text" name="end" value="50"><br>
+    <input type="checkbox" name="reverse">Reverse<br>
+    <input type="submit" value="Begin">
+  </form>
+{% endblock %}

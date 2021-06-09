@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<style>
+  body {
+    font-family: Arial;
+  }
+
+  #boi {
+    width: 420px;
+    margin-top: 5px;
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 24px;
+  }
+
+  td {
+    padding: 0;
+  }
+
+  div {
+    width: 200px;
+    height: 30px;
+    text-align: center;
+    padding:5px;
+    margin: 0;
+  }
+
+  div:hover{
+    background-color: beige;
+  }
+
+  #submit_answer {
+    width: 420px;
+    height: 40px;
+    background-color: white;
+  }
+
+  #submit_answer:hover {
+    background-color: beige;
+  }
+</style>
+
+<script>
+  // function post(bool) {
+  //   const token = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  //   const data = "isCorrect="+bool
+  //   const options = {
+  //     method: "POST",
+  //     headers: {
+  //       "content-type":"application/json",
+  //       "X-CSRFToken":token,
+  //       "isCorrect":bool
+  //   },
+  //     body: {}
+  //   }
+  //   console.log("isCorrect="+bool)
+  //   fetch("", options);
+  // };
+
+  function clickman(event) {
+    let element = event.target;
+    if (element.className === 'correct') {
+      element.style.backgroundColor = "lightBlue";
+      document.querySelector("#isCorrect").value = "True"
+      // submit form
+      // document.querySelector("#hidden_boi").submit()
+      // post("True")
+    } else if (element.className === 'incorrect') {
+      element.style.backgroundColor = "lightPink";
+      document.querySelector(".correct").style.backgroundColor = "lightBlue";
+      document.querySelector("#isCorrect").value = "False"
+      //  submit form
+      // document.querySelector("#hidden_boi").submit()
+      // post("False")
+    };
+    if (element.className === 'correct' || element.className === "incorrect") {
+      document.removeEventListener("click", clickman);
+      document.querySelector("#submit_answer").disabled = false;
+    };
+  };
+
+  document.addEventListener("click", clickman);
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector("#submit_answer").disabled = true;
+  });
+</script>
+
+{% endblock %}
+
+{% block body %}
+
+<form name="stop" action="{% url 'nihongo:stop' %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" name="submit_stop" value="Quit">
+</form>
+
+Remaining: {{ rem }} out of: {{ cou }}<br>
+Incorrect answers: {{ inc }}<br>
+
+<p id="boi">{{ num }}:{{ jap }}</p>
+
+<table>
+  {% for answer in ans %}
+    {% autoescape off %}
+      {% cycle '<tr><td>' '<td>' %}{{ answer }}
+    {% endautoescape %}
+  {% endfor %}
+</table>
+
+  <form name="answer" action="{% url 'nihongo:flash' %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" id="submit_answer" name="submit_answer" value="Next">
+
+    <input type="hidden" id="isCorrect" name="isCorrect" value="False">
+    <input type="hidden" id="qnum" name="qnum" value="{{ num }}">
+
+  </form>
+
+  <!--
+  <form name="hidden_boi" id="hidden_boi" action="{% url 'nihongo:flash' %}" method="POST">
+    <input type="hidden" id="isCorrect" name="isCorrect" value="False">
+    <input type="hidden" id="qnum" name="qnum" value="{{ num }}">
+    {% csrf_token %}
+  </form> -->
+
+{% endblock %}
