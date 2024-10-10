@@ -122,9 +122,12 @@ def flash(request):
 
         # generate a list of random answers
         generate_answers = True
-        for ans in sess["alist"]:
-            if ("class=correct" in ans) and (ld.eng[sess["qlist"][qnumber]] in ans):
-                generate_answers = False
+        try:
+            for ans in sess["alist"]:
+                if ("class=correct" in ans) and (ld.eng[sess["qlist"][qnumber]] in ans):
+                    generate_answers = False
+        except KeyError:
+            pass
         if generate_answers:
             sess["alist"] = []
             for i in range(7):
