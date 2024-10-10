@@ -6,8 +6,8 @@ Python version is 3.7, but should work with newer versions up to 3.10 definitely
 and maybe with newer versions too.
 
 Dependencies:
-- Django (use pip install django - Django web framework)
-- openpyxl (use pip install openpyxl - Python Excel spreadsheet reader)
+- Django (use `pip install django` - Django web framework)
+- openpyxl (use `pip install openpyxl` - Python Excel spreadsheet reader)
 
 ### Running the server
 To run the server, navigate to .\DjangoMan\ and run `manage.py runserver`
